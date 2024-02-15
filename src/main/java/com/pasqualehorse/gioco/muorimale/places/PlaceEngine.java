@@ -12,6 +12,11 @@ public class PlaceEngine {
 	Map<Integer, Place> places = new HashMap<>();
 	InventarioEngine inventarioEngine = new InventarioEngine();
 
+	public PlaceEngine() {
+		places.put(1, new Bar());
+		places.put(2, new Park());
+	}
+	
 	public void runEngine(Player player) {
 		do {
 			int choiche = printPlaces();

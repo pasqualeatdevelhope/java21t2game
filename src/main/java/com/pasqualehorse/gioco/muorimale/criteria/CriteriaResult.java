@@ -35,7 +35,7 @@ public class CriteriaResult {
 
 	// TODO: definire sta roba
 	public enum CriteriaResultEnum {
-		OK, NO_MONEY, NO_HP, HIGH_HIGH;
+		OK, NO_MONEY, NO_HP, HIGH_HIGH, NO_KARMA;
 	}
 
 }
