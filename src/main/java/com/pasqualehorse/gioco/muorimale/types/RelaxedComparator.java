@@ -16,7 +16,7 @@ public abstract class RelaxedComparator<T>{
 		} else if(!relaxedComparator.getClass().equals(this.getClass())) {
 			throw new IllegalArgumentException("Cannot compare instances of differnt types");
 		} else {
-			T t = (T) relaxedComparator;
+			T t = (T) relaxedComparator.getValue();
 			return compareInternal(t);
 		}
 		

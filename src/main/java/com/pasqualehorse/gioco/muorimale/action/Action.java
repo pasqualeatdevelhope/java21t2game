@@ -9,4 +9,6 @@ public interface Action {
 	public ActionResult doAction();
 	
 	public Map<String, Requirement> actionRequirement();
+	
+	public boolean allowEndOfGameAction();
 }

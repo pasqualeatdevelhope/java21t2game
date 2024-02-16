@@ -5,11 +5,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.pasqualehorse.gioco.muorimale.action.Action;
+import com.pasqualehorse.gioco.muorimale.action.ActionEngine;
+import com.pasqualehorse.gioco.muorimale.action.engine.BarActionEngine;
 import com.pasqualehorse.gioco.muorimale.places.Place;
 
 public class Bar implements Place {
 
-	Map<Integer, Action> actions;
+	private ActionEngine actionEngine = new BarActionEngine();
 	
 	
 	@Override
@@ -18,16 +20,17 @@ public class Bar implements Place {
 	}
 	
 	@Override
-	public Map<Integer, String> getActions() {
-		Map<Integer, String> returnMap = new HashMap<>();
-		for(Entry<Integer, Action> entry : actions.entrySet()) {
-			returnMap.put(entry.getKey(), entry.getValue().getActionName());
-		}
-		return returnMap;
+	public String getPlaceName() {
+		return "Bar";
 	}
 
 	@Override
-	public String getPlaceName() {
+	public ActionEngine getActionEngine() {
+		return actionEngine;
+	}
+
+	@Override
+	public String getPlacePrintableName() {
 		return "Bar";
 	}
 

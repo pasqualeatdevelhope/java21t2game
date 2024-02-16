@@ -1,22 +1,14 @@
 package com.pasqualehorse.gioco.muorimale.states;
 
-import java.util.Map;
+import java.util.Map.Entry;
 
 import com.pasqualehorse.gioco.muorimale.action.ActionResult;
 import com.pasqualehorse.gioco.muorimale.criteria.CriteriaEvaluator;
+import com.pasqualehorse.gioco.muorimale.criteria.DefaultCriteriaEvaluator;
 import com.pasqualehorse.gioco.muorimale.types.FloatingPointNumber;
-import com.pasqualehorse.gioco.muorimale.types.IntegerNumber;
 import com.pasqualehorse.gioco.muorimale.types.RelaxedComparator;
 
 public class HumanCharacter extends DefaultCharacter {
-
-	@Override
-	public void apply(ActionResult actionResult) {
-		Map<String, RelaxedComparator<?>> applyToContext = actionResult.getApplyToContext();
-		applyToContext.forEach((key, value) -> {
-			getGameContext().put(key, value);
-		});
-	}
 
 	public HumanCharacter(HumanCharacterCustomizer customizer) {
 		this.getGameContext().put(MONEY_KEY, customizer.getMoney());
@@ -25,20 +17,20 @@ public class HumanCharacter extends DefaultCharacter {
 		this.getGameContext().put(KARMA_KEY, customizer.getKarma());
 	}
 
+	public final GameContext gameContext = new GameContext();
+
 	public static class HumanCharacterCustomizer {
 		private FloatingPointNumber money;
-		private IntegerNumber hp;
-		private IntegerNumber high;
-		private IntegerNumber karma;
+		private FloatingPointNumber hp;
+		private FloatingPointNumber high;
+		private FloatingPointNumber karma;
 
 		public static HumanCharacterCustomizer withDefault() {
-			return new HumanCharacterCustomizer()
-					.withHigh(IntegerNumber.from(0))
-					.withHp(IntegerNumber.from(100))
-					.withKarma(IntegerNumber.from(0))
-					.withMoney(FloatingPointNumber.from(0d));
+			return new HumanCharacterCustomizer().withHigh(FloatingPointNumber.from(0d))
+					.withHp(FloatingPointNumber.from(100d)).withKarma(FloatingPointNumber.from(100d))
+					.withMoney(FloatingPointNumber.from(100d));
 		}
-		
+
 		public HumanCharacter build() {
 			return new HumanCharacter(this);
 		}
@@ -48,17 +40,17 @@ public class HumanCharacter extends DefaultCharacter {
 			return this;
 		}
 
-		public HumanCharacterCustomizer withHp(IntegerNumber hp) {
+		public HumanCharacterCustomizer withHp(FloatingPointNumber hp) {
 			this.hp = hp;
 			return this;
 		}
 
-		public HumanCharacterCustomizer withHigh(IntegerNumber high) {
+		public HumanCharacterCustomizer withHigh(FloatingPointNumber high) {
 			this.high = high;
 			return this;
 		}
 
-		public HumanCharacterCustomizer withKarma(IntegerNumber karma) {
+		public HumanCharacterCustomizer withKarma(FloatingPointNumber karma) {
 			this.karma = karma;
 			return this;
 		}
@@ -67,27 +59,41 @@ public class HumanCharacter extends DefaultCharacter {
 			return money;
 		}
 
-		public IntegerNumber getHp() {
+		public FloatingPointNumber getHp() {
 			return hp;
 		}
 
-		public IntegerNumber getHigh() {
+		public FloatingPointNumber getHigh() {
 			return high;
 		}
 
-		public IntegerNumber getKarma() {
+		public FloatingPointNumber getKarma() {
 			return karma;
 		}
 	}
 
 	@Override
-	public boolean stillAlive() {
-		// TODO Auto-generated method stub
-		return false;
+	public CriteriaEvaluator getCriteriaEvaluator() {
+		return DefaultCriteriaEvaluator.instance();
 	}
 
 	@Override
-	public CriteriaEvaluator getCriteriaEvaluator() {
-		return new 
+	public GameContext getGameContext() {
+		return this.gameContext;
 	}
+
+	@Override
+	public void apply(ActionResult actionResult) {
+		for (Entry<String, RelaxedComparator<?>> entry : actionResult.getApplyToContext().entrySet()) {
+			this.getGameContext().get(entry.getKey()).applyChanges(entry.getValue());
+		}
+	}
+
+	@Override
+	public void printStats() {
+		for (Entry<String, RelaxedComparator<?>> entry : this.gameContext.entrySet()) {
+			System.out.println(entry.getKey() + "="+ entry.getValue().getValue());
+		}
+	}
+
 }

@@ -3,8 +3,8 @@ package com.pasqualehorse.gioco.muorimale.types;
 public class FloatingPointNumber extends RelaxedComparator<Double> {
 
 	
-	public static RelaxedComparator<?> from(Double value) {
-		RelaxedComparator<Double> fpn = new FloatingPointNumber();
+	public static FloatingPointNumber from(Double value) {
+		FloatingPointNumber fpn = new FloatingPointNumber();
 		fpn.value = value;
 		return fpn;
 	}

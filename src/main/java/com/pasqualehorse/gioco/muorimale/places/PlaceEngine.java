@@ -3,8 +3,10 @@ package com.pasqualehorse.gioco.muorimale.places;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.pasqualehorse.gioco.muorimale.action.ActionEngine;
 import com.pasqualehorse.gioco.muorimale.input.Iutils;
 import com.pasqualehorse.gioco.muorimale.inventario.InventarioEngine;
+import com.pasqualehorse.gioco.muorimale.places.bar.Bar;
 import com.pasqualehorse.gioco.muorimale.states.Player;
 
 public class PlaceEngine {
@@ -14,11 +16,10 @@ public class PlaceEngine {
 
 	public PlaceEngine() {
 		places.put(1, new Bar());
-		places.put(2, new Park());
 	}
 	
 	public void runEngine(Player player) {
-		do {
+		while(true) {
 			int choiche = printPlaces();
 			if (choiche == 0) {
 				inventarioEngine.goInventario(player);
@@ -30,7 +31,7 @@ public class PlaceEngine {
 					System.out.println("Place not found");
 				}
 			}
-		} while (player.stillAlive());
+		}
 	}
 
 	private int printPlaces() {

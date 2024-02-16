@@ -27,9 +27,9 @@ public class CriteriaResult {
 		state.add(item);
 	}
 
-	public static CriteriaResult from(CriteriaResult criteria) {
+	public static CriteriaResult from(CriteriaResultEnum criteria) {
 		CriteriaResult cr = new CriteriaResult();
-		cr.setState(CriteriaResultEnum.OK);
+		cr.setState(criteria);
 		return cr;
 	}
 
@@ -38,4 +38,10 @@ public class CriteriaResult {
 		OK, NO_MONEY, NO_HP, HIGH_HIGH, NO_KARMA;
 	}
 
+	@Override
+	public String toString() {
+		return "CriteriaResult [state=" + state + "]";
+	}
+
+	
 }
